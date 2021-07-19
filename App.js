@@ -1,21 +1,90 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react'
+import {Dimensions} from 'react-native'
+import {createAppContainer, createSwitchNavigator} from 'react-navigation'
+import {createStackNavigator} from 'react-navigation-stack'
+import {createDrawerNavigator, DrawerItems} from 'react-navigation-drawer'
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+
+import HomeScreen from './src/screens/HomeScreen'
+import NotesScreen from './src/screens/NotesScreen'
+import NotesShowScreen from './src/screens/NotesShowScreen'
+import ReportErrorScreen from './src/screens/ReportErrorScreen'
+import AboutScreen from './src/screens/AboutScreen'
+
+import SideBar from './src/screens/SideBar'
+
+
+// const switchNavigator = createSwitchNavigator({
+//   Splash: SplashScreen,
+//   MainFlow: createDrawerNavigator({
+//     PAKISTAN: PakistanScreen,
+//     USA: USAScreen
+//   })
+// })
+
+const screenHeight = Dimensions.get("window").height
+
+const navOptions = ({navigation}) => {
+  return {
+    headerLeft: ()=> <LeftIcon navigation={navigation} />,
+    headerRight: ()=> <RightIcon navigation={navigation} />,
+    headerTitle: () => <Header/>,
+    headerStyle: {
+      backgroundColor: '#D8439C',
+      height: screenHeight * 0.12
+    },
+    headerShown: false
+  }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+const drawerNav = createDrawerNavigator({
+  HOME: {
+    screen: createStackNavigator({
+      Home: {
+        screen: HomeScreen,
+        navigationOptions: navOptions
+      }
+    })
   },
-});
+  NOTES: {
+    screen: createStackNavigator({
+      notes: {
+        screen: NotesScreen,
+        navigationOptions: navOptions
+      },
+      notesShow: {
+        screen: NotesShowScreen,
+        navigationOptions: navOptions
+      }
+    })
+  },
+  'CONTACT US': {
+    screen: createStackNavigator({
+      ContactUs: {
+        screen: ReportErrorScreen,
+        navigationOptions: navOptions
+      }
+    })
+  },
+  ABOUT: {
+    screen: createStackNavigator({
+      About: {
+        screen: AboutScreen,
+        navigationOptions: navOptions
+      }
+    })
+  }
+},{
+  contentComponent: SideBar,
+  drawerBackgroundColor: 'transparent'
+})
+
+// const switchNav = createSwitchNavigator({
+//   Splash: SplashScreen,
+//   MainFlow: drawerNav
+// })
+
+const App = createAppContainer(drawerNav)
+export default () => {
+  return <App/>
+}
