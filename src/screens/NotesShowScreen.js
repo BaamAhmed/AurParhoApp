@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {View, Text, StyleSheet, Button, ScrollView, RefreshControl, Dimensions, Linking, Image, FlatList, TouchableOpacity} from 'react-native'
 import ShowHeader from '../components/ShowHeader'
+import * as OpenAnything from 'react-native-openanything'
 
 const screenHeight = Dimensions.get('window').height
 
@@ -9,6 +10,14 @@ const NotesShowScreen = ({route, navigation})=> {
     // const [findSearchedNotes, searchedNotes] = useGetSearched()
     // useEffect(()=>{findSearchedNotes({})}, [])
     // console.log(searchedNotes)
+    const handleDownload = ()=> {
+        if (note.fileName == "" || note.fileName === undefined){
+            Linking.openURL(note.noteLink)
+        } else {
+            navigation.navigate('notesPDF', {note: note})
+        }
+    }
+
     const note = navigation.getParam('note')
     console.log(note)
     return (
@@ -27,7 +36,7 @@ const NotesShowScreen = ({route, navigation})=> {
                     }
                 </View>
             </View>
-            <TouchableOpacity onPress={()=> {Linking.openURL(note.noteLink)}}>
+            <TouchableOpacity onPress={()=> {handleDownload()}}>
                 <View style={{...styles.containerStyle, backgroundColor: '#EAAA3B', borderRadius: 10}}>
                     <Text style={{textAlign: 'center', ...styles.headingStyle, marginBottom: 0, color: 'black', fontSize: 18}}>DOWNLOAD</Text>
                 </View>

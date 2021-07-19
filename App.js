@@ -8,6 +8,7 @@ import {createDrawerNavigator, DrawerItems} from 'react-navigation-drawer'
 import HomeScreen from './src/screens/HomeScreen'
 import NotesScreen from './src/screens/NotesScreen'
 import NotesShowScreen from './src/screens/NotesShowScreen'
+import NotePDFShow from './src/screens/NotePDFShow'
 import ReportErrorScreen from './src/screens/ReportErrorScreen'
 import AboutScreen from './src/screens/AboutScreen'
 
@@ -54,6 +55,10 @@ const drawerNav = createDrawerNavigator({
       },
       notesShow: {
         screen: NotesShowScreen,
+        navigationOptions: navOptions
+      },
+      notesPDF: {
+        screen: NotePDFShow,
         navigationOptions: navOptions
       }
     })
